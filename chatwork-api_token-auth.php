@@ -62,7 +62,11 @@ class chatwork
     /* Common */
     public function sendRequest($method, $endpoint, $parm = false)
     {
-        $content = $parm;
+        if ($parm) {
+            $content = $parm;
+        } else {
+            $content = array();
+        }
         $header = array(
             'Content-Type: application/x-www-form-urlencoded',
             'Content-Length: ' . strlen(http_build_query($content, '', '&')),
@@ -164,7 +168,13 @@ class chatwork
 
     public function getRooms($rooms_id = false)
     {
+        if ($rooms_id) {
+            $endpoint = '/rooms/' . $rooms_id;
+        } else {
+            $endpoint = '/rooms';
+        }
 
+        return $this->sendRequest('GET', $endpoint);
     }
 
 
@@ -185,9 +195,10 @@ class chatwork
 
     /* Members */
 
-    public function getRoomsMembers($rooms_id = false)
+    public function getRoomsMembers($rooms_id)
     {
-
+        $endpoint = '/rooms/' . $rooms_id . '/members';
+        return $this->sendRequest('GET', $endpoint);
     }
 
     public function putRoomsMembers($rooms_id = false)
@@ -196,9 +207,16 @@ class chatwork
     }
 
     /* Message */
-    public function getRoomsMessages($rooms_id = false, $message_id = false)
+    public function getRoomsMessages($rooms_id, $message_id = false, $force = false)
     {
+        if ($message_id) {
+            $endpoint = '/rooms/' . $rooms_id . '/messages/' . $message_id;
+            $parm['force'] = $force;
+        } else {
+            $endpoint = '/rooms/' . $rooms_id . '/messages';
+        }
 
+        return $this->sendRequest('GET', $endpoint, $parm);
     }
 
     public function putRoomsMessages($rooms_id = false)
@@ -229,7 +247,6 @@ class chatwork
             $limit = strtotime('2000-01-01 00:00:00');
         }
 
-        $parm['method'] = 'POST';
         $parm['body'] = $body;
         $parm['limit'] = $limit;
         $parm['to_ids'] = implode(',', $to_ids);
@@ -239,8 +256,13 @@ class chatwork
 
 
     /* File */
-    public function getRoomsFiles($rooms_id = false, $file_id = false)
+    public function getRoomsFiles($rooms_id, $file_id = false, $account_id = false, $create_download_url = false)
     {
+        if ($file_id) {
+            $account_id;
+        } else {
+            $create_download_url;
+        }
 
     }
 
