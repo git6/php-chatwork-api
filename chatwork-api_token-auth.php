@@ -3,26 +3,6 @@
 /**
  * Author: Git6.com
  * Site: http://git6.com/
- *
- * Chatwork API v1 (APIトークン認証版) PHPラッパー
- *
- * よりシンプルに、このラッパー自体を変更して
- * システムに合わせた処理で返せるようなつくり。
- * オブジェクトになっているが1エンドポイントにつき1メソッドで定義
- * 毎回設定を変える事も可能だが、システムでincludeして
- * そのシステム専用の1ファイルとして使われる方をメインとしています。
- *
- * 命名規則
- * methodEndpointName($parm)
- * メソッドの後に変数(RoomIDとか)を抜いたエンドポイントで大体動く。
- * パラメータもそのままだからドキュメント通りで動く感じ。
- *
- * 値が不正の場合、リクエストを送らないとか面倒な事はやってない
- * 全部レスポンスを貰って判断する前提
- * バリデーションは値を渡す前に済ませておくか
- * レスポンスを見て判断すること。
- *
- * ドキュメント：http://developer.chatwork.com/ja/
  */
 class chatwork
 {
@@ -268,16 +248,11 @@ class chatwork
 
 
     /* task */
-    public function getRoomsTasks($rooms_id, $task_id = false, $account_id = false, $assigned_by_account_id = false, $status = false)
+    public function getRoomsTasks($rooms_id, $task_id = false, $account_id = false, $assigned_by_account_id = false, $status = array('open', 'done'))
     {
         if ($task_id) {
             // List
             $endpoint = '/rooms/' . $rooms_id . '/tasks';
-
-            $status_value_list = array('open', 'done');
-            if (!in_array($status, $status_value_list)) {
-                $status = 'open';
-            }
 
             $parm['account_id'] = $account_id;
             $parm['assigned_by_account_id'] = $assigned_by_account_id;
