@@ -178,19 +178,51 @@ class chatwork
     }
 
 
-    public function postRooms($rooms_id = false)
+    public function postRooms($description = false, $icon_preset = false, $members_admin_ids, $members_member_ids = array(), $members_readonly_ids = array(), $name)
     {
+        $endpoint = '/rooms';
 
+        $icon_preset_value_list = array('group', ' check', ' document', ' meeting', ' event', ' project', ' business', ' study', ' security', ' star', ' idea', ' heart', ' magcup', ' beer', ' music', ' sports', ' travel');
+        if (!in_array($icon_preset, $icon_preset_value_list)) {
+            $icon_preset = 'group';
+        }
+        $parm['description'] = (string)$description;
+        $parm['icon_preset'] = (string)$icon_preset;
+        $parm['members_admin_ids'] = implode(',', $members_admin_ids);
+        $parm['members_member_ids'] = implode(',', $members_member_ids);
+        $parm['members_readonly_ids'] = implode(',', $members_readonly_ids);
+        $parm['name'] = (string)$name;
+
+        return $this->sendRequest('POST', $endpoint, $parm);
     }
 
-    public function putRooms($rooms_id = false)
+    public function putRooms($rooms_id, $description = false, $icon_preset = false, $name = false)
     {
+        $endpoint = '/rooms/' . $rooms_id;
 
+        $icon_preset_value_list = array('group', ' check', ' document', ' meeting', ' event', ' project', ' business', ' study', ' security', ' star', ' idea', ' heart', ' magcup', ' beer', ' music', ' sports', ' travel');
+        if (!in_array($icon_preset, $icon_preset_value_list)) {
+            $icon_preset = 'group';
+        }
+        $parm['description'] = (string)$description;
+        $parm['icon_preset'] = (string)$icon_preset;
+        $parm['name'] = (string)$name;
+
+        return $this->sendRequest('PUT', $endpoint, $parm);
     }
 
-    public function deleteRooms($rooms_id = false)
+    public function deleteRooms($rooms_id, $action_type)
     {
+        $endpoint = '/rooms/' . $rooms_id;
 
+        $action_type_value_list = array('leave', ' delete');
+        if (!in_array($action_type, $action_type_value_list)) {
+            $action_type = 'leave';
+        }
+
+        $parm['action_type'] = (string)$action_type;
+
+        return $this->sendRequest('DELETE', $endpoint, $parm);
     }
 
     /* Members */
@@ -201,9 +233,15 @@ class chatwork
         return $this->sendRequest('GET', $endpoint);
     }
 
-    public function putRoomsMembers($rooms_id = false)
+    public function putRoomsMembers($rooms_id, $members_admin_ids, $members_member_ids = array(), $members_readonly_ids = array())
     {
+        $endpoint = '/rooms/' . $rooms_id . '/members';
 
+        $parm['members_admin_ids'] = implode(',', $members_admin_ids);
+        $parm['members_member_ids'] = implode(',', $members_member_ids);
+        $parm['members_readonly_ids'] = implode(',', $members_readonly_ids);
+
+        return $this->sendRequest('PUT', $endpoint, $parm);
     }
 
     /* Message */
@@ -219,33 +257,43 @@ class chatwork
         return $this->sendRequest('GET', $endpoint, $parm);
     }
 
-    public function putRoomsMessages($rooms_id = false)
+    public function postRoomsMessages($rooms_id, $body)
     {
+        $endpoint = '/rooms/' . $rooms_id . '/messages';
 
+        $parm['body'] = (string)$body;
+
+        return $this->sendRequest('POST', $endpoint, $parm);
     }
 
 
     /* task */
-    public function getRoomsTasks($rooms_id, $task_id = false, $account_id, $assigned_by_account_id, $status = array('open', 'done'))
+    public function getRoomsTasks($rooms_id, $task_id = false, $account_id = false, $assigned_by_account_id = false, $status = false)
     {
         if ($task_id) {
             // List
+            $endpoint = '/rooms/' . $rooms_id . '/tasks';
 
+            $status_value_list = array('open', 'done');
+            if (!in_array($status, $status_value_list)) {
+                $status = 'open';
+            }
+
+            $parm['account_id'] = $account_id;
+            $parm['assigned_by_account_id'] = $assigned_by_account_id;
+            $parm['status'] = $status;
 
         } else {
             // Single Detail
-
+            $endpoint = '/rooms/' . $rooms_id . '/tasks/' . $task_id;
         }
 
+        return $this->sendRequest('GET', $endpoint, $parm);
     }
 
     public function postRoomsTasks($rooms_id, $body, $limit = false, $to_ids)
     {
         $endpoint = '/rooms/' . $rooms_id . '/tasks';
-        if ($limit == false) {
-            // limitが無い場合勝手に初期値を入れる
-            $limit = strtotime('2000-01-01 00:00:00');
-        }
 
         $parm['body'] = $body;
         $parm['limit'] = $limit;
@@ -259,16 +307,18 @@ class chatwork
     public function getRoomsFiles($rooms_id, $file_id = false, $account_id = false, $create_download_url = false)
     {
         if ($file_id) {
-            $account_id;
+            $endpoint = '/rooms/' . $rooms_id . '/files';
+            $parm['account_id'] = $account_id;
         } else {
-            $create_download_url;
+            $endpoint = '/rooms/' . $rooms_id . '/files/' . $file_id;
+            if ($create_download_url) {
+                $parm['create_download_url'] = 1;
+            } else {
+                $parm['create_download_url'] = 0;
+            }
         }
 
-    }
-
-    public function putRoomsFiles($rooms_id = false)
-    {
-
+        return $this->sendRequest('GET', $endpoint, $parm);
     }
 
     /* -------------------------------------------- */
