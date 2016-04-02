@@ -296,5 +296,18 @@ class chatwork
         return $this->sendRequest('GET', $endpoint, $parm);
     }
 
+    /* Option */
+    public function messagenotationTo($account_id)
+    {
+        return '[To:' . $account_id . ']';
+    }
+
+    public function messagenotationRp($account_id, $rooms_id, $message_id)
+    {
+
+        return '[rp aid=' . $account_id . ' to=' . $rooms_id . '-' . $message_id . ']';
+    }
+
+
     /* -------------------------------------------- */
 }
