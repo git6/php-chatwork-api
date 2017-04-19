@@ -1,5 +1,8 @@
-# Chatwork API v1 (APIトークン認証版) PHPラッパー
+# Chatwork API v1/v2 (APIトークン認証版) PHPラッパー
 - - -
+### v1について
+5月15日で止まるらしいよ
+https://help.chatwork.com/hc/ja/articles/115000019401
 
 ### 向いている使い方
 適当システムにずいっとincludeして即席で使いたい時とか
