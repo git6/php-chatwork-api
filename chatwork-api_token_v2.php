@@ -2,7 +2,7 @@
 
 /**
  * Author: Git6.com
- * Site: http://git6.com/
+ * Site: https://git6.com/
  */
 class chatwork
 {
@@ -319,15 +319,16 @@ class chatwork
 
 
     /* Option */
-    public function messagenotationTo($account_id)
+    public function messagenotationTo($account_id, $label = false)
     {
-        return '[To:' . $account_id . ']';
+        $label_display = ($label) ? ' ' . $label . 'さん' : '';
+        return '[To:' . $account_id . ']' . $label_display;
     }
 
-    public function messagenotationRp($account_id, $rooms_id, $message_id)
+    public function messagenotationRp($account_id, $rooms_id, $message_id, $label = false)
     {
-
-        return '[rp aid=' . $account_id . ' to=' . $rooms_id . '-' . $message_id . ']';
+        $label_display = ($label) ? ' ' . $label . 'さん' : '';
+        return '[rp aid=' . $account_id . ' to=' . $rooms_id . '-' . $message_id . ']' . $label_display;
     }
 
 

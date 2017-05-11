@@ -1,7 +1,6 @@
 # Chatwork API v1/v2 (APIトークン認証版) PHPラッパー
 - - -
-### v1について
-5月15日で止まるらしいよ
+### v1の停止について
 https://help.chatwork.com/hc/ja/articles/115000019401
 
 ### 向いている使い方
@@ -32,7 +31,7 @@ Wordpress等既存CMS、システムに持ち込んでその部分だけ独自�
 
 ### さくっと使いはじめる
 ```
-include 'chatwork-api.php';
+require_once('chatwork-api_token_v2.php');
 $chatwork = new chatwork();
 $result = $chatwork->getMe();
 ```
