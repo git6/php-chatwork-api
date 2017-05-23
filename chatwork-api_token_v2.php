@@ -331,6 +331,28 @@ class chatwork
         return '[rp aid=' . $account_id . ' to=' . $rooms_id . '-' . $message_id . ']' . $label_display;
     }
 
+    public function messagenotationQt($account_id, $message_body, $time = false)
+    {
+        $time_set = ($time) ? ' time=' . $time . '' : '';
+        return '[qt][qtmeta aid=' . $account_id . '' . $time_set . ']' . $message_body . '[/qt]';
+    }
+
+    public function messagenotationInfo($message_body, $title = false)
+    {
+        $title_set = ($title) ? '[title]' . $title . '[/title]' : '';
+        return '[info]' . $title_set . '' . $message_body . '[/info]';
+    }
+
+    public function messagenotationPicon($account_id)
+    {
+        return '[picon:' . $account_id . ']';
+    }
+
+    public function messagenotationPiconName($account_id)
+    {
+        return '[piconname:' . $account_id . ']';
+    }
+
 
     /* -------------------------------------------- */
 }
