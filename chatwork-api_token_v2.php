@@ -18,7 +18,8 @@ class chatwork
     public $rateLimit_remaining; //残りコール回数
     public $rateLimit_reset; //次に制限がリセットされる時間（Unix time）
 
-    /* 呼び出す時にtokenを設定する事も出来る */
+    /* 呼び出す時にtokenを設定する事も出来る
+       ユーザー別にオブジェクトを生成して個別に扱う事も可能 */
     public function __construct($token = false)
     {
         if ($token) {
